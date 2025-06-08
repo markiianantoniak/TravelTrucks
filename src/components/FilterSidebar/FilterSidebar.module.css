@@ -1,0 +1,160 @@
+.sidebar {
+  background-color: #ffffff;
+  border: 1px solid #dadde1;
+  border-radius: 10px;
+  padding: 40px;
+  height: fit-content;
+  position: sticky;
+  top: 120px;
+}
+
+.filterSection {
+  margin-bottom: 32px;
+}
+
+.label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.locationInput {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 18px 18px 18px 44px;
+  border: none;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #101828;
+}
+
+.input::placeholder {
+  color: #6b7280;
+}
+
+.locationIcon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #dadde1;
+  margin: 24px 0;
+}
+
+.filterTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #101828;
+  margin-bottom: 32px;
+}
+
+.filterGroup {
+  margin-bottom: 32px;
+}
+
+.groupTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #101828;
+  margin-bottom: 24px;
+}
+
+.checkboxGrid,
+.radioGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.checkboxItem,
+.radioItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 8px;
+  border: 1px solid #dadde1;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 95px;
+  text-align: center;
+}
+
+.checkboxItem:hover,
+.radioItem:hover {
+  border-color: #e44848;
+}
+
+.checkboxItem.checked,
+.radioItem.checked {
+  border-color: #e44848;
+  background-color: #fef2f2;
+}
+
+.hiddenCheckbox,
+.hiddenRadio {
+  display: none;
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.checkboxLabel,
+.radioLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #101828;
+  line-height: 1.25;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.searchButton {
+  background-color: #e44848;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 40px;
+  border-radius: 200px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.searchButton:hover {
+  background-color: #d73527;
+}
+
+.clearButton {
+  background: transparent;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+}
+
+.clearButton:hover {
+  color: #e44848;
+}

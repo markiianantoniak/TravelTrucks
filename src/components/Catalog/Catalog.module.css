@@ -1,0 +1,62 @@
+.catalog {
+  padding: 48px 0;
+  min-height: calc(100vh - 88px);
+}
+
+.catalogContent {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.campersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.campersGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.noResults {
+  text-align: center;
+  padding: 64px 0;
+  color: #6b7280;
+}
+
+.noResults p {
+  font-size: 18px;
+}
+
+.loadMoreSection {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.loadMoreButton {
+  background: transparent;
+  border: 1px solid #dadde1;
+  color: #101828;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 32px;
+  border-radius: 200px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 145px;
+}
+
+.loadMoreButton:hover {
+  border-color: #e44848;
+  color: #e44848;
+}
+
+.loadMoreButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
