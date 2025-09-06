@@ -13,14 +13,14 @@ const VehicleDetails = ({ camper }) => {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>Vehicle details</h3>
-      <div className={styles.details}>
+      <ul className={styles.details}>
         {details.map((detail, index) => (
-          <div key={index} className={styles.detail}>
+          <li key={index} className={styles.detail}>
             <span className={styles.label}>{detail.label}</span>
             <span className={styles.value}>{detail.value}</span>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
