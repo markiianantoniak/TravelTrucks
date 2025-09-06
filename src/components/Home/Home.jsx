@@ -6,7 +6,7 @@ import heroBg from "../../icons/HomePic.jpg";
 const Home = () => {
   return (
     <div className={styles.hero} style={{ backgroundImage: `url(${heroBg})` }}>
-      <div className="container">
+      <div className={styles.homeContainer}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>Campers of your dreams</h1>
           <p className={styles.subtitle}>

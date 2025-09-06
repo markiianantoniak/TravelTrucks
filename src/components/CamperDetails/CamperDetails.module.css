@@ -23,11 +23,16 @@
 }
 
 .stars {
+  display: flex;
+  gap: 3px;
+  color: #475467;
   color: #ffc531;
   font-weight: 500;
 }
 
 .location {
+  display: flex;
+  gap: 3px;
   color: #475467;
 }
 

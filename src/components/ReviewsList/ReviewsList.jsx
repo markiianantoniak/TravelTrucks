@@ -1,6 +1,10 @@
 import styles from "./ReviewsList.module.css";
 
 const ReviewsList = ({ reviews }) => {
+  const icons = import.meta.glob("../../icons/*.svg", {
+    eager: true,
+    import: "default",
+  });
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <span

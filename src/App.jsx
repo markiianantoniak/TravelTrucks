@@ -5,7 +5,7 @@ import Home from "./components/Home/Home";
 import Catalog from "./components/Catalog/Catalog";
 import CamperDetails from "./components/CamperDetails/CamperDetails";
 import NotificationContainer from "./components/NotificationContainer/NotificationContainer";
-// import NotFound from "./components/NotFound/NotFound";
+import NotFound from "./components/NotFound/NotFound";
 import styles from "./App.module.css";
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:id" element={<CamperDetails />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="/campers/:id" element={<CamperDetails />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <NotificationContainer />

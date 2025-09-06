@@ -9,6 +9,26 @@ import {
 import { clearCampers } from "../../redux/campersSlice";
 import styles from "./FilterSidebar.module.css";
 
+const icons = import.meta.glob("../../icons/*.svg", {
+  eager: true,
+  import: "default",
+});
+
+const VEHICLE_EQUIPMENT = [
+  { key: "AC", label: "AC", icon: "ac.svg" },
+  { key: "automatic", label: "Automatic", icon: "automatic.svg" },
+  { key: "kitchen", label: "Kitchen", icon: "kitchen.svg" },
+  { key: "TV", label: "TV", icon: "tv.svg" },
+  { key: "bathroom", label: "Bathroom", icon: "shower.svg" },
+  { key: "refrigerator", label: "Refrigerator", icon: "refrigerator.svg" },
+];
+
+const VEHICLE_TYPES = [
+  { key: "panelTruck", label: "Van", icon: "van.svg" },
+  { key: "fullyIntegrated", label: "Fully Integrated", icon: "integrated.svg" },
+  { key: "alcove", label: "Alcove", icon: "alcove.svg" },
+];
+
 const FilterSidebar = ({ onSearch }) => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
@@ -35,20 +55,6 @@ const FilterSidebar = ({ onSearch }) => {
     dispatch(clearCampers());
   };
 
-  const vehicleEquipment = [
-    { key: "AC", label: "AC", icon: "❄️" },
-    { key: "automatic", label: "Automatic", icon: "⚙️" },
-    { key: "kitchen", label: "Kitchen", icon: "🍳" },
-    { key: "TV", label: "TV", icon: "📺" },
-    { key: "bathroom", label: "Bathroom", icon: "🚿" },
-  ];
-
-  const vehicleTypes = [
-    { key: "panelTruck", label: "Van", icon: "🚐" },
-    { key: "fullyIntegrated", label: "Fully Integrated", icon: "🏠" },
-    { key: "alcove", label: "Alcove", icon: "🏕️" },
-  ];
-
   return (
     <div className={styles.sidebar}>
       <div className={styles.filterSection}>
@@ -61,7 +67,11 @@ const FilterSidebar = ({ onSearch }) => {
             onChange={handleLocationChange}
             className={styles.input}
           />
-          <span className={styles.locationIcon}>📍</span>
+          <img
+            src={icons["../../icons/location.svg"]}
+            alt="Location"
+            className={styles.locationIcon}
+          />
         </div>
       </div>
 
@@ -69,11 +79,10 @@ const FilterSidebar = ({ onSearch }) => {
 
       <div className={styles.filterSection}>
         <h3 className={styles.filterTitle}>Filters</h3>
-
         <div className={styles.filterGroup}>
           <h4 className={styles.groupTitle}>Vehicle equipment</h4>
           <div className={styles.checkboxGrid}>
-            {vehicleEquipment.map(({ key, label, icon }) => (
+            {VEHICLE_EQUIPMENT.map(({ key, label, icon }) => (
               <label
                 key={key}
                 className={`${styles.checkboxItem} ${
@@ -86,7 +95,11 @@ const FilterSidebar = ({ onSearch }) => {
                   onChange={() => handleFeatureToggle(key)}
                   className={styles.hiddenCheckbox}
                 />
-                <span className={styles.icon}>{icon}</span>
+                <img
+                  src={icons[`../../icons/${icon}`]}
+                  alt={label}
+                  className={styles.icon}
+                />
                 <span className={styles.checkboxLabel}>{label}</span>
               </label>
             ))}
@@ -96,7 +109,7 @@ const FilterSidebar = ({ onSearch }) => {
         <div className={styles.filterGroup}>
           <h4 className={styles.groupTitle}>Vehicle type</h4>
           <div className={styles.radioGrid}>
-            {vehicleTypes.map(({ key, label, icon }) => (
+            {VEHICLE_TYPES.map(({ key, label, icon }) => (
               <label
                 key={key}
                 className={`${styles.radioItem} ${
@@ -110,7 +123,11 @@ const FilterSidebar = ({ onSearch }) => {
                   onChange={() => handleFormChange(key)}
                   className={styles.hiddenRadio}
                 />
-                <span className={styles.icon}>{icon}</span>
+                <img
+                  src={icons[`../../icons/${icon}`]}
+                  alt={label}
+                  className={styles.icon}
+                />
                 <span className={styles.radioLabel}>{label}</span>
               </label>
             ))}

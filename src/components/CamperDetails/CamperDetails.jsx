@@ -1,13 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCamperById } from "../../redux/campersSlice";
 import { toggleFavorite } from "../../redux/favoritesSlice";
-import VehicleDetails from "../../components/VehicleDetails/VehicleDetails";
-import ReviewsList from "../../components/ReviewsList/ReviewsList";
-import BookingForm from "../../components/BookingForm/BookingForm";
-import Loader from "../Loader/Loader";
+import { getFeaturesList } from "../getFeaturesList";
 import styles from "./CamperDetails.module.css";
+
+const icons = import.meta.glob("../../icons/*.svg", {
+  eager: true,
+  import: "default",
+});
+
+const VehicleDetails = lazy(() =>
+  import("../../components/VehicleDetails/VehicleDetails")
+);
+const ReviewsList = lazy(() =>
+  import("../../components/ReviewsList/ReviewsList")
+);
+const BookingForm = lazy(() =>
+  import("../../components/BookingForm/BookingForm")
+);
+const Loader = lazy(() => import("../Loader/Loader"));
 
 const CamperDetails = () => {
   const { id } = useParams();
@@ -31,24 +44,13 @@ const CamperDetails = () => {
     dispatch(toggleFavorite(id));
   };
 
-  const getFeaturesList = (camper) => {
-    const features = [];
-    if (camper.transmission) features.push({ name: "Automatic", icon: "🚗" });
-    if (camper.engine) features.push({ name: camper.engine, icon: "⛽" });
-    if (camper.AC) features.push({ name: "AC", icon: "❄️" });
-    if (camper.bathroom) features.push({ name: "Bathroom", icon: "🚿" });
-    if (camper.kitchen) features.push({ name: "Kitchen", icon: "🍳" });
-    if (camper.TV) features.push({ name: "TV", icon: "📺" });
-    if (camper.radio) features.push({ name: "Radio", icon: "📻" });
-    if (camper.refrigerator)
-      features.push({ name: "Refrigerator", icon: "🧊" });
-    if (camper.microwave) features.push({ name: "Microwave", icon: "📱" });
-    if (camper.gas) features.push({ name: "Gas", icon: "🔥" });
-    if (camper.water) features.push({ name: "Water", icon: "💧" });
-    return features;
-  };
+  if (isLoading)
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Loader />
+      </Suspense>
+    );
 
-  if (isLoading) return <Loader />;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!currentCamper)
     return <div className={styles.error}>Camper not found</div>;
@@ -61,20 +63,43 @@ const CamperDetails = () => {
         <h1 className={styles.title}>{currentCamper.name}</h1>
         <div className={styles.rating}>
           <span className={styles.stars}>
-            ⭐ {currentCamper.rating}({currentCamper.reviews?.length || 0}{" "}
+            <img
+              src={icons["../../icons/rating.svg"]}
+              alt="rating"
+              className={styles.icon}
+            />{" "}
+            {currentCamper.rating} ({currentCamper.reviews?.length || 0}{" "}
             Reviews)
           </span>
-          <span className={styles.location}>📍 {currentCamper.location}</span>
+          <span className={styles.location}>
+            <img
+              src={icons["../../icons/location.svg"]}
+              alt="location"
+              className={styles.icon}
+            />{" "}
+            {currentCamper.location}
+          </span>
         </div>
         <div className={styles.priceContainer}>
           <span className={styles.price}>€{currentCamper.price}</span>
           <button
-            className={`${styles.favoriteBtn} ${
+            className={`${styles.favoriteButton} ${
               isFavorite ? styles.favorite : ""
             }`}
             onClick={handleToggleFavorite}
+            aria-label={
+              isFavorite ? "Remove from favorites" : "Add to favorites"
+            }
           >
-            {isFavorite ? "❤️" : "🤍"}
+            <img
+              src={
+                isFavorite
+                  ? icons["../../icons/heart-liked.svg"]
+                  : icons["../../icons/heart.svg"]
+              }
+              alt={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              className={styles.favoriteIcon}
+            />
           </button>
         </div>
       </div>
@@ -113,27 +138,35 @@ const CamperDetails = () => {
 
       <div className={styles.content}>
         <div className={styles.leftPanel}>
-          {activeTab === "features" && (
-            <div className={styles.features}>
-              <div className={styles.featuresList}>
-                {features.map((feature, index) => (
-                  <div key={index} className={styles.feature}>
-                    <span className={styles.featureIcon}>{feature.icon}</span>
-                    <span className={styles.featureName}>{feature.name}</span>
-                  </div>
-                ))}
+          <Suspense fallback={<div>Loading...</div>}>
+            {activeTab === "features" && (
+              <div className={styles.features}>
+                <div className={styles.featuresList}>
+                  {features.map((feature, index) => (
+                    <div key={index} className={styles.feature}>
+                      <img
+                        src={feature.icon}
+                        alt={feature.name}
+                        className={styles.featureIcon}
+                      />
+                      <span className={styles.featureName}>{feature.name}</span>
+                    </div>
+                  ))}
+                </div>
+                <VehicleDetails camper={currentCamper} />
               </div>
-              <VehicleDetails camper={currentCamper} />
-            </div>
-          )}
+            )}
 
-          {activeTab === "reviews" && (
-            <ReviewsList reviews={currentCamper.reviews || []} />
-          )}
+            {activeTab === "reviews" && (
+              <ReviewsList reviews={currentCamper.reviews || []} />
+            )}
+          </Suspense>
         </div>
 
         <div className={styles.rightPanel}>
-          <BookingForm camperId={id} camperName={currentCamper.name} />
+          <Suspense fallback={<div>Loading form...</div>}>
+            <BookingForm camperId={id} camperName={currentCamper.name} />
+          </Suspense>
         </div>
       </div>
     </div>

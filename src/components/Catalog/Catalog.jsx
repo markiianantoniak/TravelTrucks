@@ -1,35 +1,23 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CamperCard from "../../components/CamperCard/CamperCard";
-import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
-import Loader from "../../components/Loader/Loader";
 import {
   fetchCampers,
   clearCampers,
   incrementPage,
 } from "../../redux/campersSlice";
 import styles from "./Catalog.module.css";
+const FilterSidebar = lazy(() =>
+  import("../../components/FilterSidebar/FilterSidebar")
+);
+const CamperCard = lazy(() => import("../../components/CamperCard/CamperCard"));
+const Loader = lazy(() => import("../../components/Loader/Loader"));
 
 const Catalog = () => {
   const dispatch = useDispatch();
 
-  const campersState = useSelector((state) => {
-    console.log("Full Redux state:", state);
-    console.log("Campers state:", state.campers);
-    return state.campers;
-  });
-
+  const campersState = useSelector((state) => state.campers);
   const { items = [], loading, hasMore, page } = campersState;
   const filters = useSelector((state) => state.filters);
-
-  console.log(
-    "Items type:",
-    typeof items,
-    "Is array:",
-    Array.isArray(items),
-    "Items:",
-    items
-  );
 
   const buildSearchParams = useCallback(() => {
     const searchParams = {};
@@ -59,8 +47,6 @@ const Catalog = () => {
 
   const handleSearch = useCallback(() => {
     const searchParams = buildSearchParams();
-    console.log("Search params:", searchParams);
-
     dispatch(
       fetchCampers({
         ...searchParams,
@@ -77,7 +63,6 @@ const Catalog = () => {
 
   const handleLoadMore = () => {
     const searchParams = buildSearchParams();
-
     dispatch(incrementPage());
     dispatch(
       fetchCampers({
@@ -94,17 +79,23 @@ const Catalog = () => {
     <div className={styles.catalog}>
       <div className="container">
         <div className={styles.catalogContent}>
-          <FilterSidebar onSearch={handleSearch} />
+          <Suspense fallback={<div>Loading filters...</div>}>
+            <FilterSidebar onSearch={handleSearch} />
+          </Suspense>
 
           <div className={styles.campersSection}>
             {loading && safeItems.length === 0 ? (
-              <Loader />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Loader />
+              </Suspense>
             ) : (
               <>
                 <div className={styles.campersGrid}>
-                  {safeItems.map((camper) => (
-                    <CamperCard key={camper.id} camper={camper} />
-                  ))}
+                  <Suspense fallback={<div>Loading campers...</div>}>
+                    {safeItems.map((camper) => (
+                      <CamperCard key={camper.id} camper={camper} />
+                    ))}
+                  </Suspense>
                 </div>
 
                 {safeItems.length === 0 && !loading && (
